@@ -21,9 +21,19 @@ public class ConfigFile{
         return properties.getProperty(property);
     }
 
+    public static String getImgurProperty(String property){
+        Properties properties = propertiesStorage.get("imgur");
+        return properties.getProperty(property);
+    }
+
     public static String getRedditProperty(String property){
         Properties properties = propertiesStorage.get("reddit");
         return properties.getProperty(property);
+    }
+
+    public static String[] getRedditNsfwWordList(){
+        Properties properties = propertiesStorage.get("reddit");
+        return properties.getProperty("nsfwlist").split(",");
     }
 
     public static String getR34Property(String property){
@@ -33,7 +43,7 @@ public class ConfigFile{
 
     public static void initialize(){
         propertiesStorage = new HashMap();
-        final String [] configFiles = {"discord", "reddit", "r34"};
+        final String [] configFiles = {"discord", "reddit", "r34", "imgur"};
         for (String configurationFile : configFiles){
             propertiesStorage.put(configurationFile, loadProperties(configurationFile));
         }
