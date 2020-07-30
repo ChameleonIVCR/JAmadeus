@@ -21,6 +21,11 @@ public class ConfigFile{
         return properties.getProperty(property);
     }
 
+    public static String getBooruProperty(String property){
+        Properties properties = propertiesStorage.get("booru");
+        return properties.getProperty(property);
+    }
+
     public static String getImgurProperty(String property){
         Properties properties = propertiesStorage.get("imgur");
         return properties.getProperty(property);
@@ -43,7 +48,7 @@ public class ConfigFile{
 
     public static void initialize(){
         propertiesStorage = new HashMap();
-        final String [] configFiles = {"discord", "reddit", "r34", "imgur"};
+        final String [] configFiles = {"discord", "reddit", "r34", "imgur", "booru"};
         for (String configurationFile : configFiles){
             propertiesStorage.put(configurationFile, loadProperties(configurationFile));
         }

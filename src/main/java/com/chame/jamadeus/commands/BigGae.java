@@ -8,35 +8,32 @@ import net.dv8tion.jda.api.entities.Member;
 import java.util.concurrent.Callable;
 import java.util.List;
 
-public class BigGae implements Callable<String>{
+public class BigGae implements Command{
 
-    private DiscordParameters parameters;
-
-    public BigGae(DiscordParameters parameters) {
-        this.parameters = parameters;
+    public BigGae() {
     }
 
-    public String call() throws Exception{
+    public void call(DiscordParameters parameters){
         List<Member> mentionedUsers = parameters.getMessage().getMentionedMembers();
         if (!mentionedUsers.isEmpty()) {
             for (int i = 0; i < mentionedUsers.size(); i++) {
                 Member currentMember = mentionedUsers.get(i);
                 int gaeCounter = Integer.parseInt(currentMember.getId().substring(0, 2));
-                sendGaeStatus(gaeCounter, currentMember);
+                sendGaeStatus(gaeCounter, currentMember, parameters);
             }
         } else {
             Member currentMember = parameters.getMember();
             int gaeCounter = Integer.parseInt(currentMember.getId().substring(0, 2));
-            sendGaeStatus(gaeCounter, currentMember);
+            sendGaeStatus(gaeCounter, currentMember, parameters);
         }
-        return null;
+        return;
     }
 
     private boolean isBetween(int x, int lower, int upper) {
         return lower <= x && x <= upper;
     }
 
-    private void sendGaeStatus(int gaeStatus, Member member){
+    private void sendGaeStatus(int gaeStatus, Member member, DiscordParameters parameters){
         if (gaeStatus == 0){
             parameters.sendMessage(String.format(">>> **%s**\nis **0%** gae and is looking for some side hoes.", member.getEffectiveName()));
             return;

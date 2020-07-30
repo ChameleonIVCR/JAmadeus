@@ -7,15 +7,14 @@ import com.chame.jamadeus.utils.DiscordParameters;
 
 import java.util.concurrent.Callable;
 
-public class Ping implements Callable<String>{
-    private DiscordParameters parameters;
+public class Ping implements Command{
 
-    public Ping(DiscordParameters parameters) {
-        this.parameters = parameters;
+    public Ping() {
+        //empty
     }
 
-    public String call() throws Exception{
+    public void call(DiscordParameters parameters){
         parameters.sendMessage(String.format(">>> Pong!, my current ping to Discord servers is %d ms", Jamadeus.getJda().getGatewayPing()));
-        return null;
+        return;
     }
 }

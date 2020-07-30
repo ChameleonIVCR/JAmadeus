@@ -28,12 +28,11 @@ import java.util.concurrent.Callable;
 
 public class Listener extends ListenerAdapter{
     private static String[] commList;
-    public static String trigger;
+    public static final String trigger = ConfigFile.getDiscordProperty("trigger").replaceAll("\\s+", "");
     private final ExecutorService executor = Executors.newCachedThreadPool();
 
     public Listener() {
-        final String[] commandArray = {"ping", "cursedimg", "gae", "pp", "srdt", "imgurtag", "help"};
-        trigger = ConfigFile.getDiscordProperty("trigger").replaceAll("\\s+", "");
+        final String[] commandArray = {"ping", "cursedimg", "gae", "pp", "srdt", "imgurtag", "help", "h"};
         List<String> commandList = new ArrayList<String>();
 
         for (String command : commandArray){
@@ -43,6 +42,7 @@ public class Listener extends ListenerAdapter{
 
         commList = commandList.toArray(new String[0]);
         commandList = null;
+        CommandExecutor.initialize(commList);
     }
     
     @Override
@@ -52,46 +52,14 @@ public class Listener extends ListenerAdapter{
 
         Message msg = event.getMessage();
         String pCommandCall = getFirstWord(msg.getContentRaw().toLowerCase());
-        
-        if (pCommandCall.equals(commList[0])){
-            FutureTask<String> commandTask = new FutureTask<String>(new Ping(new DiscordParameters(msg, event.getChannel(), event.getGuild(), event.getMember())));
-            executor.execute(commandTask);
-            return;
-        } else if (pCommandCall.equals(commList[1])){
-            FutureTask<String> commandTask2 = new FutureTask<String>(new CursedImg(new DiscordParameters(msg, event.getChannel(), event.getGuild(), event.getMember())));
-            executor.execute(commandTask2);
-            return;
-        } else if (pCommandCall.equals(commList[2])){
-            FutureTask<String> commandTask3 = new FutureTask<String>(new BigGae(new DiscordParameters(msg, event.getChannel(), event.getGuild(), event.getMember())));
-            executor.execute(commandTask3);
-            return;
-        } else if (pCommandCall.equals(commList[3])){
-            FutureTask<String> commandTask4 = new FutureTask<String>(new PpTest(new DiscordParameters(msg, event.getChannel(), event.getGuild(), event.getMember())));
-            executor.execute(commandTask4);
-            return;
-        } else if (pCommandCall.equals(commList[4])){
-            FutureTask<String> commandTask5 = new FutureTask<String>(new SubredditSearch(new DiscordParameters(msg, event.getChannel(), event.getGuild(), event.getMember())));
-            executor.execute(commandTask5);
-            return;
-        } else if (pCommandCall.equals(commList[5])){
-            FutureTask<String> commandTask6 = new FutureTask<String>(new ImgurtagSearch(new DiscordParameters(msg, event.getChannel(), event.getGuild(), event.getMember())));
-            executor.execute(commandTask6);
-            return;
-        } else if (pCommandCall.equals(commList[6])){
-            FutureTask<String> commandTask7 = new FutureTask<String>(new Help(new DiscordParameters(msg, event.getChannel(), event.getGuild(), event.getMember())));
-            executor.execute(commandTask7);
-            return;
-        }
-        // for (String command : commList){
-        //     if (getFirstWord(msg.getContentRaw().toLowerCase()).equals(command)){
-        //         Callable callabe1 = new CursedImg(new DiscordParameters(msg, event.getChannel(), event.getGuild(), event.getMember()));
-        //         FutureTask<String> futureTask1 = new FutureTask<String>(callabe1);
 
-        //         executor.execute(futureTask1);
-        //         //commands.get(command).start(new DiscordParameters(msg, event.getChannel(), event.getGuild(), event.getMember()));
-        //         return;
-        //     }
-        // }
+        for (String command : commList){
+            if (pCommandCall.equals(command)){
+                FutureTask<Boolean> task = new FutureTask<Boolean>(new CommandExecutor(command, new DiscordParameters(msg, event.getChannel(), event.getGuild(), event.getMember())));
+                executor.execute(task);
+                return;
+            }
+        }
         
         if (event.isFromType(ChannelType.PRIVATE))
         {

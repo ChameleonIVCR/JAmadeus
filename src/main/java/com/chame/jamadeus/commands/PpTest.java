@@ -8,35 +8,32 @@ import net.dv8tion.jda.api.entities.Member;
 import java.util.concurrent.Callable;
 import java.util.List;
 
-public class PpTest implements Callable<String>{
+public class PpTest implements Command{
 
-    private DiscordParameters parameters;
-
-    public PpTest(DiscordParameters parameters) {
-        this.parameters = parameters;
+    public PpTest() {
     }
 
-    public String call() throws Exception{
+    public void call(DiscordParameters parameters){
         List<Member> mentionedUsers = parameters.getMessage().getMentionedMembers();
         if (!mentionedUsers.isEmpty()) {
             for (int i = 0; i < mentionedUsers.size(); i++) {
                 Member currentMember = mentionedUsers.get(i);
                 int ppCounter = Integer.parseInt(currentMember.getId().substring(2, 4));
-                sendPpStatus(ppCounter, currentMember);
+                sendPpStatus(ppCounter, currentMember, parameters);
             }
         } else {
             Member currentMember = parameters.getMember();
             int ppCounter = Integer.parseInt(currentMember.getId().substring(2, 4));
-            sendPpStatus(ppCounter, currentMember);
+            sendPpStatus(ppCounter, currentMember, parameters);
         }
-        return null;
+        return;
     }
 
     private boolean isBetween(int x, int lower, int upper) {
         return lower <= x && x <= upper;
     }
 
-    private void sendPpStatus(int ppStatus, Member member){
+    private void sendPpStatus(int ppStatus, Member member, DiscordParameters parameters){
         if (ppStatus == 0){
             parameters.sendMessage(String.format(">>> **%s**\nhas **no pp** at all, :mag: sorry king.", member.getEffectiveName()));
             return;

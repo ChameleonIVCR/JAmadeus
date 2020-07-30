@@ -29,17 +29,17 @@ public class Booru {
         this.nextFetch = null;
     }
 
-    public String[] getAlbum(Integer indexn, boolean safe) {
+    public String[] getBooru(Integer indexn, boolean safe) {
         if (checkTime() && !fetchJson(safe)) {
             return null;
         }
 
         int index;
-        int imgurAlbumCount = this.booruSearchStorage.size();
+        int booruAlbumCount = this.booruSearchStorage.size();
 
-        if (indexn == null || indexn.intValue() > imgurAlbumCount && indexn.intValue() != 0) {
+        if (indexn == null || indexn.intValue() > booruAlbumCount && indexn.intValue() != 0) {
             Random rand = new Random();
-            index = rand.nextInt(imgurAlbumCount);
+            index = rand.nextInt(booruAlbumCount);
         } else {
             index = indexn.intValue();
         }
@@ -87,9 +87,10 @@ public class Booru {
             for (String blackWord : blackList){
                 if (!items.getString("tag").contains(blackWord)){
                     try {
-                        String[] post = {items.getString("page"), //page url
+                        String[] post = {items.getString("id"), //page url
+                                        items.getString("source"), //source page
                                         items.getString("userName"), //author
-                                        items.getString("preview")};  //preview image
+                                        items.getString("url")};  //preview image
                         this.booruSearchStorage.put(new Integer(albumCount), post);
                         albumCount++;
                     } catch (NullPointerException e) {

@@ -6,17 +6,15 @@ import com.chame.jamadeus.utils.DiscordParameters;
 
 import java.util.concurrent.Callable;
 
-public class Help implements Callable<String>{
-    private DiscordParameters parameters;
-    private String prefix;
+public class Help implements Command{
+    private static final String prefix = Listener.trigger;
+    private static final String helpMsg = ">>> My commands are:\n`"+prefix+"ping` returns the ping to Discord servers.\n`"+prefix+"cursedimg` returns a random cursed image.\n`"+prefix+"gae`\n`"+prefix+"pp`\n`"+prefix+"srdt`\n`"+prefix+"imgurtag`";
 
-    public Help(DiscordParameters parameters) {
-        this.parameters = parameters;
-        this.prefix = Listener.trigger;
+    public Help() {
     }
 
-    public String call() throws Exception{
-        parameters.sendMessage(">>> My commands are:\n`"+prefix+"ping` returns the ping to Discord servers.\n`"+prefix+"cursedimg` returns a random cursed image.\n`"+prefix+"gae`\n`"+prefix+"pp`\n`"+prefix+"srdt`\n`"+prefix+"imgurtag`");
-        return null;
+    public void call(DiscordParameters parameters){
+        parameters.sendMessage(helpMsg);
+        return;
     }
 }

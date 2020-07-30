@@ -8,18 +8,16 @@ import com.chame.jamadeus.utils.DiscordParameters;
 import java.util.Random;
 import java.util.concurrent.Callable;
 
-public class CursedImg implements Callable<String>{
+public class CursedImg implements Command{
     private static final Reddit redditHandle = new Reddit("cursedimages");
     private static final Reddit redditHandle2 = new Reddit("cursed_Images");
     private static final Imgur imgurHandle  = new Imgur("cursed");
-    private DiscordParameters parameters;
-    
-    public CursedImg(DiscordParameters parameters) {
-        this.parameters = parameters;
-    }
 
-    @Override
-    public String call() throws Exception{
+    public CursedImg(){
+
+    }
+    
+    public void call(DiscordParameters parameters){
         String[] fetchResult;
         int random = new Random().nextInt(2);
         if (random == 0){
@@ -31,13 +29,13 @@ public class CursedImg implements Callable<String>{
         }
         if (fetchResult == null) {
             parameters.sendMessage("Couldn't fetch subreddit 'CursedImages'");
-            return null;
+            return;
         }
         if (fetchResult.length == 5){
             parameters.sendMessage(String.format(">>> **%s**\nby *%s*\n\n*%s*\n:eyes: %s\n%s", fetchResult[0], fetchResult[1], fetchResult[3], fetchResult[2], fetchResult[4]));
         } else {
             parameters.sendMessage(String.format(">>> **%s**\nby *%s*\n\n%s", fetchResult[0], fetchResult[1], fetchResult[2]));
         }
-        return null;
+        return;
     }
 }
