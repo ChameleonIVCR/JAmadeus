@@ -8,6 +8,9 @@ import java.time.ZoneId;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.stream.Stream;
+import java.util.Arrays;
+import java.util.List;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -18,7 +21,7 @@ import javax.json.Json;
 
 public class Booru {
     private static final int fetchRefreshHour = getFetchHour();
-    private static final String[] blackList = {"loli", "gore"};
+    private static final List<String> blackList = Arrays.asList("loli", "gore");
     private final Map<Integer, String[]> booruSearchStorage;
     private final String booruSearch;
     private ZonedDateTime nextFetch;
@@ -44,9 +47,7 @@ public class Booru {
             index = indexn.intValue();
         }
 
-        return  booruSearchStorage.get(new Integer(index));
-        //TODO return
-
+        return booruSearchStorage.get(new Integer(index));
     }
 
     private boolean checkTime(){
@@ -84,18 +85,16 @@ public class Booru {
         
         for(int i = 0; i < booruJson.size() || i < 20; i++) {
             JsonObject items = booruJson.getJsonObject(i);
-            for (String blackWord : blackList){
-                if (!items.getString("tag").contains(blackWord)){
-                    try {
-                        String[] post = {items.getString("id"), //page url
-                                        items.getString("source"), //source page
-                                        items.getString("userName"), //author
-                                        items.getString("url")};  //preview image
-                        this.booruSearchStorage.put(new Integer(albumCount), post);
-                        albumCount++;
-                    } catch (NullPointerException e) {
-                        //ignore
-                    }
+            if (!blackList.stream().anyMatch(items.getString("tag")::contains)){
+                try {
+                    String[] post = {items.getString("id"), //page url
+                                    items.getString("source"), //source page
+                                    items.getString("userName"), //author
+                                    items.getString("url")};  //preview image
+                    this.booruSearchStorage.put(new Integer(albumCount), post);
+                    albumCount++;
+                } catch (NullPointerException e) {
+                    //ignore
                 }
             }
         }

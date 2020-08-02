@@ -8,8 +8,8 @@ import java.util.concurrent.Callable;
 
 public class CommandExecutor implements Callable<Boolean>{
     private static ConcurrentHashMap<String, Command> commandStorage;
-    private String command;
-    private DiscordParameters parameters;
+    private final String command;
+    private final DiscordParameters parameters;
 
     public CommandExecutor(String command, DiscordParameters parameters){
         this.command = command;
@@ -26,7 +26,7 @@ public class CommandExecutor implements Callable<Boolean>{
     }
 
     public static void initialize(String[] commands){
-        commandStorage = new ConcurrentHashMap<String, Command>();
+        commandStorage = new ConcurrentHashMap<>();
         commandStorage.put(commands[0], new Ping());
         commandStorage.put(commands[1], new CursedImg());
         commandStorage.put(commands[2], new BigGae());

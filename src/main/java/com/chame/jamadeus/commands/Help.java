@@ -1,10 +1,7 @@
 package com.chame.jamadeus.commands;
 
-import com.chame.jamadeus.Jamadeus;
 import com.chame.jamadeus.Listener;
 import com.chame.jamadeus.utils.DiscordParameters;
-
-import java.util.concurrent.Callable;
 
 public class Help implements Command{
     private static final String prefix = Listener.trigger;
@@ -13,8 +10,8 @@ public class Help implements Command{
     public Help() {
     }
 
+    @Override
     public void call(DiscordParameters parameters){
         parameters.sendMessage(helpMsg);
-        return;
     }
 }

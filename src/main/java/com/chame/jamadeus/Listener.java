@@ -1,30 +1,19 @@
 package com.chame.jamadeus;
 
-import com.chame.jamadeus.Jamadeus;
 import com.chame.jamadeus.utils.*;
 import com.chame.jamadeus.commands.*;
 
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.AccountType;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.events.message.*;
 
 import java.util.List;
 import java.util.ArrayList;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.concurrent.Callable;
 
 public class Listener extends ListenerAdapter{
     private static String[] commList;

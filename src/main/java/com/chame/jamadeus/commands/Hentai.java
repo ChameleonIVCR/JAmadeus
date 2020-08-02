@@ -1,13 +1,9 @@
 package com.chame.jamadeus.commands;
 
-import com.chame.jamadeus.Jamadeus;
 import com.chame.jamadeus.Listener;
 import com.chame.jamadeus.utils.ConfigFile;
 import com.chame.jamadeus.scrappers.Booru;
 import com.chame.jamadeus.utils.DiscordParameters;
-
-import java.util.Random;
-import java.util.concurrent.Callable;
 
 import net.dv8tion.jda.api.entities.Message;
 
@@ -19,6 +15,7 @@ public class Hentai implements Command{
     public Hentai() {
     }
 
+    @Override
     public void call(DiscordParameters parameters){
         String hentaiSearch;
         Integer pageNumber;
@@ -46,6 +43,5 @@ public class Hentai implements Command{
         }
 
         parameters.sendMessage(String.format(">>> **%s** in *%s*\nby *%s*\n\n%s", fetchResult[0], fetchResult[1], fetchResult[2], fetchResult[3]));
-        return;
     }
 }
