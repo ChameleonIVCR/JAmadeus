@@ -17,20 +17,26 @@ import java.util.concurrent.FutureTask;
 
 public class Listener extends ListenerAdapter{
     private static String[] commList;
-    public static final String trigger = ConfigFile.getDiscordProperty("trigger").replaceAll("\\s+", "");
+    public static final String TRIGGER 
+            = ConfigFile
+            .getDiscordProperty("trigger")
+            .replaceAll("\\s+", "");
+    
     private final ExecutorService executor = Executors.newCachedThreadPool();
 
     public Listener() {
-        final String[] commandArray = {"ping", "cursedimg", "gae", "pp", "srdt", "imgurtag", "help", "h"};
-        List<String> commandList = new ArrayList<String>();
+        final String[] commandArray = {"ping", "cursedimg", 
+            "gae", "pp", "srdt", 
+            "imgurtag", "help", "h"};
+        
+        List<String> commandList = new ArrayList<>();
 
         for (String command : commandArray){
-            String textCommand = trigger + command;
+            String textCommand = TRIGGER + command;
             commandList.add(textCommand);
         }
 
         commList = commandList.toArray(new String[0]);
-        commandList = null;
         CommandExecutor.initialize(commList);
     }
     
@@ -44,7 +50,14 @@ public class Listener extends ListenerAdapter{
 
         for (String command : commList){
             if (pCommandCall.equals(command)){
-                FutureTask<Boolean> task = new FutureTask<Boolean>(new CommandExecutor(command, new DiscordParameters(msg, event.getChannel(), event.getGuild(), event.getMember())));
+                FutureTask<Boolean> task 
+                        = new FutureTask<>(new CommandExecutor(
+                        command, new DiscordParameters(
+                        msg
+                        , event.getChannel()
+                        , event.getGuild()
+                        , event.getMember())));
+                
                 executor.execute(task);
                 return;
             }

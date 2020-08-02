@@ -5,7 +5,6 @@ import com.chame.jamadeus.Jamadeus;
 import java.io.*;
 import java.util.*;
 import java.util.HashMap;
-import java.lang.Class;
 
 public class ConfigFile{
     private static String botToken;
@@ -48,10 +47,14 @@ public class ConfigFile{
 
     public static void initialize(){
         propertiesStorage = new HashMap();
-        final String [] configFiles = {"discord", "reddit", "r34", "imgur", "booru"};
+        final String [] configFiles = {"discord", "reddit"
+                , "r34", "imgur", "booru"};
+        
         for (String configurationFile : configFiles){
-            propertiesStorage.put(configurationFile, loadProperties(configurationFile));
+            propertiesStorage.put(configurationFile
+                    , loadProperties(configurationFile));
         }
+        
         Properties discordProperties = propertiesStorage.get("discord");
         botToken = discordProperties.getProperty("botToken");
     }
@@ -65,12 +68,16 @@ public class ConfigFile{
         try {
             File directory = new File("config/");
             directory.mkdir();
-            defProperties.load(Jamadeus.class.getResourceAsStream("/"+nameProperties));
+            defProperties.load(Jamadeus.class
+                    .getResourceAsStream("/"+nameProperties));
+            
             if (propFile.exists()){
                 FileInputStream fileis = new FileInputStream(propFile);
                 properties.load(fileis);
                 fileis.close();
-                if (!properties.stringPropertyNames().equals(defProperties.stringPropertyNames())){
+                if (!properties.stringPropertyNames()
+                        .equals(defProperties.stringPropertyNames())){
+                    
                     if(!propFile.delete()){
                         throw new IOException();
                     }
@@ -88,12 +95,11 @@ public class ConfigFile{
                 return defProperties;
             }
         } catch(FileNotFoundException e) {
-            e.printStackTrace();
             System.out.println("File not found");
             return null;
         } catch(IOException e) {
-            e.printStackTrace();
-            System.out.println("Can't write to storage, check the file system permissions");
+            System.out.println("Can't write to storage, "
+                    +"check the file system permissions");
             return null;
         }
     }

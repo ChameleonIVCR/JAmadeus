@@ -10,7 +10,11 @@ public class Jamadeus{
     private static JDA jda;
     public static void main(String[] args) throws Exception {
         ConfigFile.initialize();
-        jda = JDABuilder.createLight(ConfigFile.getBotToken()).addEventListeners(new Listener()).setActivity(Activity.listening(ConfigFile.getDiscordProperty("trigger").replaceAll("\\s+", "")+"help")).build();
+        jda = JDABuilder.createLight(ConfigFile.getBotToken())
+            .addEventListeners(new Listener())
+            .setActivity(Activity.listening(
+            ConfigFile.getDiscordProperty("trigger")
+            .replaceAll("\\s+", "")+"help")).build();
     }
 
     public static JDA getJda(){

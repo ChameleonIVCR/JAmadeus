@@ -7,9 +7,9 @@ import com.chame.jamadeus.utils.DiscordParameters;
 import java.util.Random;
 
 public class CursedImg implements Command{
-    private static final Reddit redditHandle = new Reddit("cursedimages");
-    private static final Reddit redditHandle2 = new Reddit("cursed_Images");
-    private static final Imgur imgurHandle  = new Imgur("cursed");
+    private static final Reddit REDDIT_HANDLE = new Reddit("cursedimages");
+    private static final Reddit REDDIT_HANDLE_2 = new Reddit("cursed_Images");
+    private static final Imgur IMGUR_HANDLE  = new Imgur("cursed");
 
     public CursedImg(){
 
@@ -20,13 +20,13 @@ public class CursedImg implements Command{
         String[] fetchResult;
         switch (new Random().nextInt(2)) {
             case 1:
-                fetchResult = redditHandle.getSubReddit(null);
+                fetchResult = REDDIT_HANDLE.getSubReddit(null);
                 break;
             case 2:
-                fetchResult = redditHandle2.getSubReddit(null);
+                fetchResult = REDDIT_HANDLE_2.getSubReddit(null);
                 break;
             default:
-                fetchResult = imgurHandle.getAlbum(null, 1);
+                fetchResult = IMGUR_HANDLE.getAlbum(null, 1);
                 break;
         }
         if (fetchResult == null) {
@@ -34,9 +34,14 @@ public class CursedImg implements Command{
             return;
         }
         if (fetchResult.length == 5){
-            parameters.sendMessage(String.format(">>> **%s**\nby *%s*\n\n*%s*\n:eyes: %s\n%s", fetchResult[0], fetchResult[1], fetchResult[3], fetchResult[2], fetchResult[4]));
+            parameters.sendMessage(String.format(">>> **%s**\nby *%s*\n\n*%s*\n"
+                    +":eyes: %s\n%s", fetchResult[0], 
+                    fetchResult[1], fetchResult[3], 
+                    fetchResult[2], fetchResult[4]));
         } else {
-            parameters.sendMessage(String.format(">>> **%s**\nby *%s*\n\n%s", fetchResult[0], fetchResult[1], fetchResult[2]));
+            parameters.sendMessage(String.format(">>> **%s**\nby *%s*\n\n%s", 
+                    fetchResult[0], fetchResult[1], 
+                    fetchResult[2]));
         }
     }
 }
